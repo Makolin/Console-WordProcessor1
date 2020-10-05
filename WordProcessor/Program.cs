@@ -4,7 +4,7 @@ namespace WordProcessor
 {
     class Program
     {
-        // Знакомство с приложением
+        // Вывод информации об основных параметрах, используемых для данного приложения
         public static void ShowCommand()
         {
             Console.WriteLine("Выберете один из представленных параметров:");
@@ -19,26 +19,21 @@ namespace WordProcessor
         // Ограничение в использовании всего одного параметра
         static void Main(string[] args)
         {
-            var path = @"C:\Users\Makolin\Desktop\Download.txt";
-
-            // Выполнять команды, пока не будет произведен выход
             while (true)
             {
-                // Подстановка слов, если запущено без параметров
                 if (args.Length == 0)
                 {
                     MainCommands.AddToWords();
                     break;
                 }
 
-                // В зависимости от введенной команды пользователем, выполняем различные сценарии
                 switch (args[0])
                 {
                     case "-c":
-                        MainCommands.CreateDictionary(path);
+                        MainCommands.CreateDictionary();
                         return;
                     case "-u":
-                        MainCommands.UpdateDictionary(path);
+                        MainCommands.UpdateDictionary();
                         return;
                     case "-d":
                         MainCommands.ClearDictionary();

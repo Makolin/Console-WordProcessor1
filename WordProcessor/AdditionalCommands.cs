@@ -1,10 +1,33 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System;
+using System.IO;
+using System.Text;
 
 namespace WordProcessor
 {
     class AdditionalCommands
     {
+        // Метод для проверки пути до файла
+        public static string CheckFile ()
+        {
+            var inputText = string.Empty;
+            var path = string.Empty;
+
+            Console.Write("Укажите путь до файла: ");
+            path = Console.ReadLine();
+
+            try
+            {
+                inputText = File.ReadAllText(path, Encoding.UTF8);
+            }
+            catch
+            {
+                Console.WriteLine("Ошибка! Неверно указан путь до файла.");
+            }
+            return inputText;
+        }
+
         // Метод для преобразования текста в словарь и возвращения данной коллекции 
         public static void SplitText(ref Dictionary<string, int> CurrentDictionary, string inputText)
         {
@@ -14,11 +37,11 @@ namespace WordProcessor
             foreach (var word in arrayWords)
             {
                 var frequency = 0;
+
                 if (CurrentDictionary.TryGetValue(word, out frequency))
                 {
                     CurrentDictionary[word]++;
                 }
-                // Имеются ограничения для добавления в словарь по длине и по частоте использования слова по тексту
                 else
                 {
                     if (word.Length >= 3 && word.Length <= 15)
