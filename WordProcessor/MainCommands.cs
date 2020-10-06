@@ -7,10 +7,9 @@ using System.IO;
 
 namespace WordProcessor
 {
-    // Класс, который содержит описание команд, которые могут быть выполнены словарем 
     class MainCommands
     {
-        // Команда создания словаря - формирование нового словаря по входящему файлу
+        // Метод для создания словаря - формирование нового словаря по входящему файлу, путь до файла необходимо указывать после использования параметра
         // Если словарь уже заполнен (имеет значения), то выводится соответствующее сообщение для пользователя
         public static void CreateDictionary()
         {
@@ -19,7 +18,10 @@ namespace WordProcessor
 
             inputText = AdditionalCommands.CheckFile();
             if (inputText.Length == 0)
+            {
+                Console.WriteLine("Ошибка! Указанный файл пуст.");
                 return;
+            }  
 
             using (var db = new WordContext())
             {
@@ -41,7 +43,7 @@ namespace WordProcessor
             Console.WriteLine("Словарь успешно заполнен!");
         }
 
-        // Команда обновления словаря - дополнение существующего словаря по входящему файлу
+        // Метод для обновления словаря - дополнение существующего словаря по входящему файлу
         // Данная команда объединяет значения, которые уже хранятся в базе данных с новыми, которые будут получены из файла
         // Если словарь пуст, то будет выведено соответствующее сообщение для пользователя
         public static void UpdateDictionary()
@@ -51,7 +53,10 @@ namespace WordProcessor
 
             inputText = AdditionalCommands.CheckFile();
             if (inputText.Length == 0)
+            {
+                Console.WriteLine("Ошибка! Указанный файл пуст.");
                 return;
+            }
 
             using (var db = new WordContext())
             {
@@ -77,7 +82,6 @@ namespace WordProcessor
                     else
                     {
                         query.FirstOrDefault().WordFrequency = oneWord.Value;
-                        db.SaveChanges();
                     }
                 }
                 db.SaveChanges();
@@ -85,7 +89,7 @@ namespace WordProcessor
             Console.WriteLine("Словарь успешно дополнен!");
         }
 
-        // Команда очищения словаря - удаление всех данных из словаря
+        // Метод для очищения словаря - удаление всех данных из словаря
         public static void ClearDictionary()
         {
             using (var db = new WordContext())
@@ -96,7 +100,7 @@ namespace WordProcessor
             Console.WriteLine("Словарь очищен");
         }
 
-        // Команда для демонстрации количества слов в словаре
+        // Метод для демонстрации количества слов в словаре
         public static void ReportDistionary()
         {
             using (var db = new WordContext())
@@ -142,27 +146,29 @@ namespace WordProcessor
                             Console.WriteLine($">{prefix}");
                             Console.WriteLine("Ошибка! Словарь пуст, его необходимо заполнить!");
                         }
-
-                        var query = (from word in db.Words
-                                     where word.WordName.StartsWith(prefix.ToLower().Trim())
-                                     orderby word.WordFrequency descending, word.WordName
-                                     select word).Take(5);
-
-                        if (query.Count() != 0)
-                        {
-                            Console.WriteLine($">{prefix}");
-                            foreach (var addWord in query)
-                            {
-                                Console.WriteLine("- " + addWord.WordName);
-                                prefix = string.Empty;
-                            }
-                        }
                         else
                         {
-                            Console.WriteLine($">{prefix}");
-                            Console.WriteLine("Ошибка! Не найдено ни одного значения для автозаполнения!");
-                            prefix = string.Empty;
-                        }       
+                            var query = (from word in db.Words
+                                         where word.WordName.StartsWith(prefix.ToLower().Trim())
+                                         orderby word.WordFrequency descending, word.WordName
+                                         select word).Take(5);
+
+                            if (query.Count() != 0)
+                            {
+                                Console.WriteLine($">{prefix}");
+                                foreach (var addWord in query)
+                                {
+                                    Console.WriteLine("- " + addWord.WordName);
+                                    prefix = string.Empty;
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine($">{prefix}");
+                                Console.WriteLine("Ошибка! Не найдено ни одного значения для автозаполнения!");
+                                prefix = string.Empty;
+                            }
+                        } 
                     }
                 }
                 else

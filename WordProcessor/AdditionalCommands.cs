@@ -8,7 +8,7 @@ namespace WordProcessor
 {
     class AdditionalCommands
     {
-        // Метод для проверки пути до файла
+        // Метод для проверки пути до файла, необходимо загружать текстовый файл в формате UTF8
         public static string CheckFile ()
         {
             var inputText = string.Empty;
