@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data.Entity;
 using System.Linq;
-using System.IO;
 
 namespace WordProcessor
 {
@@ -13,7 +11,7 @@ namespace WordProcessor
         // Если словарь уже заполнен (имеет значения), то выводится соответствующее сообщение для пользователя
         public static void CreateDictionary()
         {
-            var inputText = string.Empty;
+            string inputText = string.Empty;
             Dictionary<string, int> WordsDictionary = new Dictionary<string, int>();
 
             inputText = AdditionalCommands.CheckFile();
@@ -48,10 +46,9 @@ namespace WordProcessor
         // Если словарь пуст, то будет выведено соответствующее сообщение для пользователя
         public static void UpdateDictionary()
         {
-            var inputText = string.Empty;
             Dictionary<string, int> WordsDictionary = new Dictionary<string, int>();
 
-            inputText = AdditionalCommands.CheckFile();
+            string inputText = AdditionalCommands.CheckFile();
             if (inputText.Length == 0)
             {
                 Console.WriteLine("Ошибка! Указанный файл пуст.");
@@ -121,11 +118,14 @@ namespace WordProcessor
         // Если словарь пуст, то поиск не имеет смысла и будет выведено соответствующее сообщение для пользователя
         public static void AddToWords()
         {
-            var prefix = string.Empty;
+            string prefix = string.Empty;
+
             while (true)
             {
                 if (prefix == "")
-                    Console.Write('>') ;
+                {
+                    Console.Write('>');
+                } 
 
                 var pressKey = Console.ReadKey(true);
                 Console.Write(pressKey.KeyChar);

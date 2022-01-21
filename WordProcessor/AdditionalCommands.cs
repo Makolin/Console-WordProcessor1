@@ -9,13 +9,12 @@ namespace WordProcessor
     class AdditionalCommands
     {
         // Метод для проверки пути до файла, необходимо загружать текстовый файл в формате UTF8
-        public static string CheckFile ()
+        public static string CheckFile()
         {
-            var inputText = string.Empty;
-            var path = string.Empty;
+            string inputText = string.Empty;
 
             Console.Write("Укажите путь до файла: ");
-            path = Console.ReadLine();
+            string path = Console.ReadLine();
 
             try
             {
@@ -36,7 +35,7 @@ namespace WordProcessor
 
             foreach (var word in arrayWords)
             {
-                var frequency = 0;
+                int frequency = default;
 
                 if (CurrentDictionary.TryGetValue(word, out frequency))
                 {
@@ -45,7 +44,9 @@ namespace WordProcessor
                 else
                 {
                     if (word.Length >= 3 && word.Length <= 15)
+                    {
                         CurrentDictionary.Add(word, 1);
+                    }
                 }
             }
             CurrentDictionary = CurrentDictionary.Where(t => t.Value >= 3).ToDictionary(k => k.Key, v => v.Value);
